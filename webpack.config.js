@@ -1,5 +1,4 @@
 const dev = process.env.NODE_ENV !== "production";
-const webpack = require( "webpack" );
 const path = require( "path" );
 const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
 const FriendlyErrorsWebpackPlugin = require( "friendly-errors-webpack-plugin" );
@@ -9,14 +8,11 @@ const plugins = [
 ];
 
 if ( !dev ) {
-    plugins.push(
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new BundleAnalyzerPlugin( {
-            analyzerMode: "static",
-            reportFilename: "webpack-report.html",
-            openAnalyzer: false,
-        } ),
-    );
+    plugins.push( new BundleAnalyzerPlugin( {
+        analyzerMode: "static",
+        reportFilename: "webpack-report.html",
+        openAnalyzer: false,
+    } ) );
 }
 
 module.exports = {
@@ -24,8 +20,7 @@ module.exports = {
     context: path.join( __dirname, "src" ),
     devtool: dev ? "none" : "source-map",
     entry: {
-        app: "./js/App.js",
-        lib: [ "react", "react-dom" ],
+        app: "./client.js",
     },
     resolve: {
         modules: [
@@ -44,19 +39,7 @@ module.exports = {
     },
     output: {
         path: path.resolve( __dirname, "dist" ),
-        filename: "js/[name].bundle.js",
-    },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    chunks: "initial",
-                    minChunks: Infinity,
-                    name: "lib",
-                    enforce: true,
-                },
-            },
-        },
+        filename: "[name].bundle.js",
     },
     plugins,
 };
