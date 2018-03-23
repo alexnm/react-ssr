@@ -1,0 +1,68 @@
+{
+  "name": "react-bootstrap",
+  "version": "0.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "build": "NODE_ENV=production webpack --progress",
+    "dev": "webpack-dev-server --progress --content-base dist --colors --inline",
+    "linter": "eslint src",
+    "test": "NODE_ENV=test jest --no-cache",
+    "bundlesize": "bundlesize",
+    "precommit": "eslint src --quiet",
+    "prepush": "npm run test"
+  },
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.3.13",
+    "bundlesize": "^0.16.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "eslint": "^4.12.0",
+    "eslint-config-fortech-react": "^1.0.2",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "friendly-errors-webpack-plugin": "^1.6.1",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "webpack": "^4.0.0",
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-cli": "^2.0.9",
+    "webpack-dev-server": "^3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "Firefox ESR"
+  ],
+  "bundlesize": [
+    {
+      "path": "./dist/js/app.bundle.js",
+      "maxSize": "170 kB"
+    },
+    {
+      "path": "./dist/js/lib.bundle.js",
+      "maxSize": "110 kB"
+    }
+  ],
+  "jest": {
+    "transform": {
+      "^.+\\.jsx$": "babel-jest",
+      "^.+\\.js$": "babel-jest"
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/test-config/test-setup.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
