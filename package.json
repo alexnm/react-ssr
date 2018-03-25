@@ -14,7 +14,10 @@
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
@@ -40,8 +43,6 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "nodemon": "^1.17.2",
-    "react-redux": "^5.0.7",
-    "redux": "^3.7.2",
     "webpack": "^4.0.0",
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-cli": "^2.0.9",
