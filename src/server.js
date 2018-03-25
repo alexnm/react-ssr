@@ -3,8 +3,9 @@ import path from "path";
 
 import React from "react";
 import { renderToString } from "react-dom/server";
-import { StaticRouter } from "react-router-dom";
+import { StaticRouter, matchPath } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
+import routes from "./routes";
 import Layout from "./components/Layout";
 import createStore, { initializeSession } from "./store";
 
@@ -18,19 +19,28 @@ app.get( "/*", ( req, res ) => {
 
     store.dispatch( initializeSession( ) );
 
-    const jsx = (
-        <ReduxProvider store={ store }>
-            <StaticRouter context={ context } location={ req.url }>
-                <Layout />
-            </StaticRouter>
-        </ReduxProvider>
-    );
-    const reactDom = renderToString( jsx );
+    const dataRequirements =
+        routes
+            .filter( route => matchPath( req.url, route ) ) // filter matching paths
+            .map( route => route.component ) // map to components
+            .filter( comp => comp.serverFetch ) // check if components have data requirement
+            .map( comp => store.dispatch( comp.serverFetch( ) ) ); // dispatch data requirement
 
-    const reduxState = store.getState( );
+    Promise.all( dataRequirements ).then( ( ) => {
+        const jsx = (
+            <ReduxProvider store={ store }>
+                <StaticRouter context={ context } location={ req.url }>
+                    <Layout />
+                </StaticRouter>
+            </ReduxProvider>
+        );
+        const reactDom = renderToString( jsx );
 
-    res.writeHead( 200, { "Content-Type": "text/html" } );
-    res.end( htmlTemplate( reactDom, reduxState ) );
+        const reduxState = store.getState( );
+
+        res.writeHead( 200, { "Content-Type": "text/html" } );
+        res.end( htmlTemplate( reactDom, reduxState ) );
+    } );
 } );
 
 app.listen( 2048 );
