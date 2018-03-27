@@ -27,4 +27,5 @@ Understand the different parts of server side rendering by going through each ta
 * [Data Fetching](https://github.com/alexnm/react-ssr/tree/data-fetch)
 * [Using React Helmet](https://github.com/alexnm/react-ssr/tree/helmet)
 
-## Article coming soon!
+## In depth explanations
+Read more about [implementing server side rendering](https://medium.com/@alexnm/demystifying-reacts-server-side-render-de335d408fe4) step by step. Feedback is more than welcome!
