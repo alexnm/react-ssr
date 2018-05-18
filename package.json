@@ -6,6 +6,8 @@
   "scripts": {
     "build": "NODE_ENV=production webpack --progress",
     "dev": "webpack --watch --progress & nodemon index.js",
+    "server": "nodemon index.js",
+    "client": "webpack --watch --progress",
     "linter": "eslint src",
     "bundlesize": "bundlesize",
     "precommit": "eslint src --quiet"
