@@ -24,7 +24,7 @@ Understand the different parts of server side rendering by going through each ta
 * [Base example](https://github.com/alexnm/react-ssr/tree/basic)
 * [Adding React Router](https://github.com/alexnm/react-ssr/tree/router)
 * [Adding Redux](https://github.com/alexnm/react-ssr/tree/redux)
-* [Data Fetching](https://github.com/alexnm/react-ssr/tree/data-fetch)
+* [Data Fetching](https://github.com/alexnm/react-ssr/tree/fetch-data)
 * [Using React Helmet](https://github.com/alexnm/react-ssr/tree/helmet)
 
 ## In depth explanations
