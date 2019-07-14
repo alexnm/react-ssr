@@ -2,9 +2,13 @@ const dev = process.env.NODE_ENV !== "production";
 const path = require( "path" );
 const { BundleAnalyzerPlugin } = require( "webpack-bundle-analyzer" );
 const FriendlyErrorsWebpackPlugin = require( "friendly-errors-webpack-plugin" );
+const MiniCssExtractPlugin = require( "mini-css-extract-plugin" );
 
 const plugins = [
     new FriendlyErrorsWebpackPlugin(),
+    new MiniCssExtractPlugin({
+        filename: "styles.css",
+    }),
 ];
 
 if ( !dev ) {
@@ -34,6 +38,14 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: "babel-loader",
+            }, {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    "css-loader",
+                ],
             },
         ],
     },

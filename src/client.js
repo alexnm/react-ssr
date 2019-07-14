@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from "react-redux";
 
 import Layout from "./components/Layout";
 import createStore from "./store";
+import "./App.css";
 
 const store = createStore( window.REDUX_DATA );
 

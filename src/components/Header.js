@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 
 const Header = ( { loggedIn } ) => (
     <div>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
-        { loggedIn && <Link to="/secret">Secret</Link> }
+        <Link to="/" className="link">Home</Link>
+        <Link to="/about" className="link">About</Link>
+        <Link to="/contact" className="link">Contact</Link>
+        { loggedIn && <Link to="/secret" className="link">Secret</Link> }
     </div>
 );
 
