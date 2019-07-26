@@ -13,7 +13,7 @@ class Home extends React.Component {
         const { circuits } = this.props;
 
         return (
-            <div>
+            <div className="wrapper">
                 <h2>F1 2018 Season Calendar</h2>
                 <ul>
                     { circuits.map( ( { circuitId, circuitName, Location } ) => (
