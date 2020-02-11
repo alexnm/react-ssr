@@ -1,3 +1,12 @@
+step1
+- lets get rid of express
+- 
+
+
+
+
+----------
+
 - takes minutes to install
 - mix casing (can cause problems on case insensitive filesystems)
 - tonnes of errors and warnings (project last commit was days ago)
