@@ -1,6 +1,12 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
-import { fetchCircuits } from "./api";
+import { createStore, combineReducers, applyMiddleware } from "redux"
+import thunkMiddleware from "redux-thunk"
+import fetch from "isomorphic-fetch"
+
+function fetchCircuits( ) {
+    return fetch( "http://ergast.com/api/f1/2018/circuits.json" )
+        .then( res => res.json( ) )
+        .then( res => res.MRData.CircuitTable.Circuits );
+}
 
 export const initializeSession = ( ) => ( {
     type: "INITIALIZE_SESSION",
