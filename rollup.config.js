@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript'
+import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import {terser} from 'rollup-plugin-terser'
@@ -24,6 +25,9 @@ let client = {
       }
     }),
     typescript({ jsx: 'react' }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
     terser()
   ]
 }
@@ -45,7 +49,11 @@ let server = {
         'react-is': Object.keys(reactIs),
       }
     }), 
-    typescript({ jsx: 'react' })
+    typescript({ jsx: 'react' }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+    terser()
   ]
 }
 
