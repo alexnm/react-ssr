@@ -22,7 +22,7 @@ export async function render(path) {
   await Promise.all( dataRequirements )
   const jsx = (
       <ReduxProvider store={ store }>
-        <StaticRouter context={ context } location={ path }>
+        <StaticRouter context={ {} } location={ path }>
           <Layout />
         </StaticRouter>
       </ReduxProvider>

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@architect/functions": "^3.7.0"
+    "@architect/functions": "^3.7.0",
+    "isomorphic-fetch": "^2.2.1"
   }
 }

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c && cp src/views/index.css dist/index.css",
-    "start": "npm run build && sandbox"
+    "start": "npm run build && sandbox",
+    "deploy": "arc deploy"
   },
   "dependencies": {
     "@architect/sandbox": "latest",

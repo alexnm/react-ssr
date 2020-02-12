@@ -49,11 +49,10 @@ let server = {
         'react-is': Object.keys(reactIs),
       }
     }), 
-    typescript({ jsx: 'react' }),
+    typescript({ jsx: 'react', target: 'ES2020' }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-    terser()
+    })
   ]
 }
 
