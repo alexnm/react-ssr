@@ -20,27 +20,25 @@ export async function render(path) {
           .map( comp => store.dispatch( comp.serverFetch( ) ) ); // dispatch data requirement
 
   await Promise.all( dataRequirements )
+
   const jsx = (
       <ReduxProvider store={ store }>
         <StaticRouter context={ {} } location={ path }>
           <Layout />
         </StaticRouter>
       </ReduxProvider>
-  );
+  )
+
   const reactDom = ReactDOMServer.renderToString( jsx );
   const reduxState = store.getState( );
   const helmetData = Helmet.renderStatic( );
 
-  return htmlTemplate( reactDom, reduxState, helmetData ) 
-}
-
-function htmlTemplate( reactDom, reduxState, helmetData ) {
   return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset=utf-8>
-  ${ helmetData.title.toString( ) }
-  ${ helmetData.meta.toString( ) }
+  ${ helmetData.title.toString() }
+  ${ helmetData.meta.toString() }
   <title>React SSR</title>
   <link rel=stylesheet type=text/css href=/_static/index.css>
 </head>

@@ -1,0 +1,224 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Exported by architect/package@1.2.5 on 2020-02-12T06:39:36.544Z
+Resources:
+  ReactSsr:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: staging
+      DefinitionBody:
+        openapi: 3.0.1
+        info:
+          title:
+            Ref: AWS::StackName
+        paths:
+          /:
+            get:
+              responses:
+                '200':
+                  description: 200 response
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIndex.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: '200'
+                    contentHandling: CONVERT_TO_TEXT
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                contentHandling: CONVERT_TO_TEXT
+                type: aws_proxy
+          /{proxy+}:
+            x-amazon-apigateway-any-method:
+              parameters:
+              - name: proxy
+                in: path
+                required: true
+                schema:
+                  type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIndex.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: '200'
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                cacheNamespace: xlr8r
+                cacheKeyParameters:
+                - method.request.path.proxy
+                contentHandling: CONVERT_TO_TEXT
+                type: aws_proxy
+          /_static/{proxy+}:
+            x-amazon-apigateway-any-method:
+              parameters:
+              - name: proxy
+                in: path
+                required: true
+                schema:
+                  type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub:
+                  - http://${bukkit}.s3.${AWS::Region}.amazonaws.com/{proxy}
+                  - bukkit:
+                      Ref: StaticBucket
+                responses:
+                  default:
+                    statusCode: '200'
+                requestParameters:
+                  integration.request.path.proxy: method.request.path.proxy
+                passthroughBehavior: when_no_match
+                httpMethod: ANY
+                cacheNamespace: xlr8r2
+                cacheKeyParameters:
+                - method.request.path.proxy
+                type: http_proxy
+      EndpointConfiguration: REGIONAL
+      BinaryMediaTypes:
+      - '*~1*'
+      MinimumCompressionSize: 0
+  GetIndex:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      CodeUri: s3://react-ssr-cfn-deployments-ff795/c265c3466ed045aa8aedca5a74d48459
+      Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 5
+      Environment:
+        Variables:
+          ARC_ROLE:
+            Ref: Role
+          ARC_CLOUDFORMATION:
+            Ref: AWS::StackName
+          ARC_APP_NAME: react-ssr
+          ARC_HTTP: aws_proxy
+          NODE_ENV: staging
+          SESSION_TABLE_NAME: jwe
+          ARC_STATIC_BUCKET:
+            Ref: StaticBucket
+      Role:
+        Fn::Sub:
+        - arn:aws:iam::${AWS::AccountId}:role/${roleName}
+        - roleName:
+            Ref: Role
+      Events:
+        GetIndexEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+            RestApiId:
+              Ref: ReactSsr
+  InvokeProxyPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: GetIndex
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${restApiId}/*/*
+        - restApiId:
+            Ref: ReactSsr
+  StaticBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: ArcGlobalPolicy
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - logs:DescribeLogStreams
+            Resource: arn:aws:logs:*:*:*
+      - PolicyName: ArcStaticBucketPolicy
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:PutObjectAcl
+            - s3:DeleteObject
+            Resource:
+            - Fn::Sub:
+              - arn:aws:s3:::${bukkit}
+              - bukkit:
+                  Ref: StaticBucket
+            - Fn::Sub:
+              - arn:aws:s3:::${bukkit}/*
+              - bukkit:
+                  Ref: StaticBucket
+  StaticBucketParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Name:
+        Fn::Sub:
+        - /${AWS::StackName}/static/${key}
+        - key: bucket
+      Value:
+        Ref: StaticBucket
+  StaticFingerprintParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Name:
+        Fn::Sub:
+        - /${AWS::StackName}/static/${key}
+        - key: fingerprint
+      Value: 'false'
+  ParameterStorePolicy:
+    Type: AWS::IAM::Policy
+    DependsOn: Role
+    Properties:
+      PolicyName: ArcParameterStorePolicy
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Action: ssm:GetParametersByPath
+          Resource:
+            Fn::Sub:
+            - arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}
+            - {}
+      Roles:
+      - Ref: Role
+Outputs:
+  API:
+    Description: API Gateway
+    Value:
+      Fn::Sub:
+      - https://${restApiId}.execute-api.${AWS::Region}.amazonaws.com/staging
+      - restApiId:
+          Ref: ReactSsr
+  restApiId:
+    Description: HTTP restApiId
+    Value:
+      Ref: ReactSsr
+  BucketURL:
+    Description: Bucket URL
+    Value:
+      Fn::Sub:
+      - http://${bukkit}.s3-website-${AWS::Region}.amazonaws.com
+      - bukkit:
+          Ref: StaticBucket

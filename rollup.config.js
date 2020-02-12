@@ -8,6 +8,15 @@ import * as react from 'react'
 import * as reactDom from 'react-dom'
 import * as reactIs from 'react-is'
 
+let cjs = {
+  include: 'node_modules/**',
+  namedExports: {
+    'react': Object.keys(react),
+    'react-dom': Object.keys(reactDom),
+    'react-is': Object.keys(reactIs),
+  }
+}
+
 let client = {
   input: 'src/views/client.tsx',
   output: {
@@ -16,14 +25,7 @@ let client = {
   },
   plugins: [
     resolve({ browser: true }), 
-    commonjs({
-      include: 'node_modules/**',
-      namedExports: {
-        'react': Object.keys(react),
-        'react-dom': Object.keys(reactDom),
-        'react-is': Object.keys(reactIs),
-      }
-    }),
+    commonjs(cjs),
     typescript({ jsx: 'react' }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
@@ -38,18 +40,11 @@ let server = {
     dir: 'src/views/dist',
     format: 'cjs'
   },
-  external: ['isomorphic-fetch'],
+  external: ['isomorphic-fetch', 'stream'],
   plugins: [
     resolve({ browser: false, preferBuiltins: true }), 
-    commonjs({
-      include: 'node_modules/**',
-      namedExports: {
-        'react': Object.keys(react),
-        'react-dom': Object.keys(reactDom),
-        'react-is': Object.keys(reactIs),
-      }
-    }), 
-    typescript({ jsx: 'react', target: 'ES2020' }),
+    commonjs(cjs), 
+    typescript({ jsx: 'react', target: 'ES2018' }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
     })
