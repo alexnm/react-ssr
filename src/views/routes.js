@@ -1,7 +1,7 @@
-import Home from "./components/Home";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Secret from "./components/Secret";
+import Home from "./components/home";
+import About from "./components/about";
+import Contact from "./components/contact";
+import Secret from "./components/secret";
 
 export default [
     {
