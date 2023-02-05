@@ -1,5 +1,5 @@
-# React Server Side Rendering
-A baseline for server side rendering for your React application. This repo has a couple of tags that follow building full support for rendering React applications on the server.
+# [DEPRECATED] React Server Side Rendering
+This is no longer the recommended way to approach server side rendering with React. For an all-round solution look at a starter with `next.js` or `remix`
 
 ## Getting started
 Clone the repo with
