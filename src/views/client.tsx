@@ -3,9 +3,8 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 
-import Layout from "./components/Layout";
+import Layout from "./components/layout";
 import createStore from "./store";
-import "./App.css";
 
 const store = createStore( window.REDUX_DATA );
 
