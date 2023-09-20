@@ -19,7 +19,7 @@ jobs:
           npm run build
 
       - name: Upload to EC2
-        uses: appleboy/scp-action@v2
+        uses: appleboy/scp-action@v1
         with:
           host: 65.2.73.226
           username: ec2-user
