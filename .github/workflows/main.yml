@@ -1,0 +1,40 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies and Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload to EC2
+        uses: appleboy/scp-action@v2
+        with:
+          host: 65.2.73.226
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: build/
+          target: /var/www/myapp
+
+      - name: SSH into EC2 and Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 65.2.73.226
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            cd /var/www/myapp
+            
+
