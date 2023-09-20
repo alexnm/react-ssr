@@ -28,7 +28,7 @@ jobs:
           target: /var/www/myapp
 
       - name: SSH into EC2 and Deploy
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v2
         with:
           host: 65.2.73.226
           username: ec2-user
