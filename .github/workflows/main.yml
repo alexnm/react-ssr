@@ -1,37 +1,43 @@
-name: Deploy to EC2 
+name: AWS Deploy
 
-on: [push]
-  
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Install Dependencies and Build
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
         run: |
-          npm install
+          npm ci
+
+      - name: Build React App
+        run: |
           npm run build
 
-      - name: Upload to EC2
-        uses: appleboy/scp-action@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: 65.2.73.226
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: build/
-          target: /var/www/myapp
+          aws-access-key-id: AKIATWE4RYDUEA5S4YAK
+          aws-secret-access-key: lm6lDv5LwBKilQZqFkcZlQM7W31iNqI3+mS4NtLS
+          aws-region: us-east-1  # Replace with your desired AWS region
 
-      - name: SSH into EC2 and Deploy
-        uses: appleboy/ssh-action@v3
-        with:
-          host: 65.2.73.226
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          script: |
-            cd /var/www/myapp
-            
+      - name: Deploy to AWS Elastic Beanstalk
+        run: |
+          npm install -g awsebcli
+          eb deploy YourElasticBeanstalkEnvironmentName  # Replace with your Elastic Beanstalk environment name
 
+# Define your secrets in the repository settings:
+# AWS_ACCESS_KEY_ID: YourAWSAccessKey
+# AWS_SECRET_ACCESS_KEY: YourAWSSecretKey
