@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
 
       - name: Install Dependencies and Build
         run: |
@@ -19,7 +19,7 @@ jobs:
           npm run build
 
       - name: Upload to EC2
-        uses: appleboy/scp-action@v2
+        uses: appleboy/scp-action@v1
         with:
           host: 65.2.73.226
           username: ec2-user
@@ -28,7 +28,7 @@ jobs:
           target: /var/www/myapp
 
       - name: SSH into EC2 and Deploy
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v2
         with:
           host: 65.2.73.226
           username: ec2-user
