@@ -16,7 +16,7 @@ jobs:
           npm run build
 
       - name: Upload to EC2
-        uses: appleboy/scp-action@v2
+        uses: appleboy/scp-action@v3
         with:
           host: 65.2.73.226
           username: ec2-user
@@ -25,7 +25,7 @@ jobs:
           target: /var/www/myapp
 
       - name: SSH into EC2 and Deploy
-        uses: appleboy/ssh-action@v2
+        uses: appleboy/ssh-action@v3
         with:
           host: 65.2.73.226
           username: ec2-user
