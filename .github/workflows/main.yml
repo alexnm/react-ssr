@@ -31,7 +31,7 @@ jobs:
         with:
           aws-access-key-id: AKIATWE4RYDUEA5S4YAK
           aws-secret-access-key: lm6lDv5LwBKilQZqFkcZlQM7W31iNqI3+mS4NtLS
-          aws-region: us-east-1  # Replace with your desired AWS region
+          aws-region: us-east-1 
 
       - name: Deploy to AWS Elastic Beanstalk
         run: |
