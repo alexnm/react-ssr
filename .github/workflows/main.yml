@@ -1,4 +1,4 @@
-name: AWS Code Deploy
+name: AWS Code Deployed
 
 on: 
   push:
