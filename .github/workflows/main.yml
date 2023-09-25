@@ -38,6 +38,5 @@ jobs:
           npm install -g awsebcli
           eb deploy YourElasticBeanstalkEnvironmentName  # Replace with your Elastic Beanstalk environment name
 
-# Define your secrets in the repository settings:
 # AWS_ACCESS_KEY_ID: YourAWSAccessKey
 # AWS_SECRET_ACCESS_KEY: YourAWSSecretKeyname: AWS Code Deploy
