@@ -1,6 +1,6 @@
 name: AWS Code Deployed
 
-on: 
+on:  
   push:
     branches:
       - main
