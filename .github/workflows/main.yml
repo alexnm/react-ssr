@@ -1,10 +1,7 @@
 name: Deploy to EC2 
 
-on:
-  push:
-    branches:
-      - master
-
+on: [push]
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -19,7 +16,7 @@ jobs:
           npm run build
 
       - name: Upload to EC2
-        uses: appleboy/scp-action@v1.0.0
+        uses: appleboy/scp-action@v2.0.0
         with:
           host: 65.2.73.226
           username: ec2-user
