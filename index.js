@@ -11,4 +11,5 @@ require( "babel-register" )( {
         "dynamic-import-node",
     ],
 } );
+console.log('clone testing')
 require( "./src/server" );
